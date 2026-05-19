@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+cloudflare:
+  d1:
+    account-id: b33694f80269245eb13aa1bee89c5467
+    database-id: 37db4e2d-27c1-4c83-aa2e-f1bbe4ca2203
+    api-token: cfut_KXinhrNH9TQlJ3FMlYMGTp8NF9qYdgtGxe4D4HxW5dea187a
+
+spring:
+  jackson:
+    default-property-inclusion: non_null
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+jwt:
+  secret: couple-order-jwt-secret-key-must-be-at-least-256-bits-long-for-hs256!!
+  expiration: 86400000
