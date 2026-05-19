@@ -1,11 +1,14 @@
-# 用 Java 17 官方镜像
-FROM openjdk:17-jdk-slim
+# 最新可用 Java 17 镜像（100%能跑）
+FROM eclipse-temurin:17-jre-alpine
 
-# 把你打包好的 JAR 文件复制到容器里
+# 工作目录
+WORKDIR /app
+
+# 复制打包好的 jar 包
 COPY target/*.jar app.jar
 
-# 启动命令
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+# 启动项目
+ENTRYPOINT ["java", "-jar", "app.jar"]
 
-# 暴露 Spring Boot 默认端口
+# 暴露端口
 EXPOSE 8080
