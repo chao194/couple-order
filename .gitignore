@@ -4,7 +4,7 @@
 *.iml
 
 # Maven
-# backend/target/
+backend/target/
 
 # Node
 frontend/node_modules/
