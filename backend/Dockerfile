@@ -1,14 +1,21 @@
-# 最新可用 Java 17 镜像（100%能跑）
-FROM eclipse-temurin:17-jre-alpine
-
-# 工作目录
+# 1. 构建阶段：Maven 打包项目
+FROM eclipse-temurin:17-jdk-alpine AS build
 WORKDIR /app
 
-# 复制打包好的 jar 包
-COPY target/*.jar app.jar
+# 复制Maven配置和源码
+COPY pom.xml .
+COPY src ./src
 
-# 启动项目
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# 打包生成JAR
+RUN ./mvnw clean package -DskipTests
 
-# 暴露端口
+# 2. 运行阶段：最小镜像
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+
+# 从构建阶段复制JAR包
+COPY --from=build /app/target/*.jar app.jar
+
+# 启动
+ENTRYPOINT ["java","-jar","app.jar"]
 EXPOSE 8080
