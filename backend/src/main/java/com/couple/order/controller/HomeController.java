@@ -9,6 +9,6 @@ public class HomeController {
 
     @GetMapping("/")
     public ApiResponse<String> home() {
-        return ApiResponse.success("Couple Order API is running");
+        return ApiResponse.ok("Couple Order API is running");
     }
 }
