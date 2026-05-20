@@ -95,6 +95,13 @@ public class InitController {
                 )
             """);
 
+            // Migration: add user_id column if not exists (for existing databases)
+            try {
+                d1.execute("ALTER TABLE orders ADD COLUMN user_id INTEGER");
+            } catch (Exception ignored) {
+                // Column already exists, ignore
+            }
+
             // Create order_items table
             d1.execute("""
                 CREATE TABLE IF NOT EXISTS order_items (

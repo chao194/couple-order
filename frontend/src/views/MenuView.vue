@@ -221,7 +221,7 @@ async function loadMenu() {
       nextTick(setupScrollObserver)
     }
   } catch (e) {
-    ElMessage.error('加载菜单失败，请先初始化数据库')
+    ElMessage.error('加载菜单失败')
     console.error(e)
   } finally {
     loading.value = false
