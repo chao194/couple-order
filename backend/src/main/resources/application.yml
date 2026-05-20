@@ -3,9 +3,9 @@ server:
 
 cloudflare:
   d1:
-    account-id: b33694f80269245eb13aa1bee89c5467
-    database-id: 37db4e2d-27c1-4c83-aa2e-f1bbe4ca2203
-    api-token: cfut_xO2LKtjMN7w6RIBT0tz2Tv3Y8QJ0fODAMP0OPb3Z423ee502
+    account-id: ${D1_ACCOUNT_ID}
+    database-id: ${D1_DATABASE_ID}
+    api-token: ${D1_API_TOKEN}
 
 spring:
   jackson:
