@@ -20,17 +20,20 @@ const routes = [
   {
     path: '/cart',
     name: 'Cart',
-    component: () => import('../views/CartView.vue')
+    component: () => import('../views/CartView.vue'),
+    meta: { public: true }
   },
   {
     path: '/orders',
     name: 'Orders',
-    component: () => import('../views/OrderListView.vue')
+    component: () => import('../views/OrderListView.vue'),
+    meta: { public: true }
   },
   {
     path: '/orders/:id',
     name: 'OrderDetail',
-    component: () => import('../views/OrderDetailView.vue')
+    component: () => import('../views/OrderDetailView.vue'),
+    meta: { public: true }
   },
   {
     path: '/admin',
@@ -50,6 +53,11 @@ const routes = [
         path: 'dish',
         name: 'AdminDish',
         component: () => import('../views/admin/DishManage.vue')
+      },
+      {
+        path: 'order',
+        name: 'AdminOrder',
+        component: () => import('../views/admin/OrderManage.vue')
       },
       {
         path: 'user',

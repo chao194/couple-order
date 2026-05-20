@@ -41,6 +41,21 @@ public class JwtAuthFilter implements Filter {
             return;
         }
 
+        // Allow unauthenticated access to orders (GET/POST only)
+        if (path.startsWith("/api/orders") && Set.of("GET", "POST").contains(httpRequest.getMethod())) {
+            String authHeader = httpRequest.getHeader("Authorization");
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                String token = authHeader.substring(7);
+                if (jwtUtil.validateToken(token)) {
+                    httpRequest.setAttribute("userId", jwtUtil.getUserId(token));
+                    httpRequest.setAttribute("username", jwtUtil.getUsername(token));
+                    httpRequest.setAttribute("role", jwtUtil.getRole(token));
+                }
+            }
+            chain.doFilter(request, response);
+            return;
+        }
+
         // Allow OPTIONS requests for CORS
         if ("OPTIONS".equalsIgnoreCase(httpRequest.getMethod())) {
             chain.doFilter(request, response);

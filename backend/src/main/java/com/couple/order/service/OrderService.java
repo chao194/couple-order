@@ -94,6 +94,32 @@ public class OrderService {
         return rows.stream().map(this::mapToOrder).toList();
     }
 
+    public List<Order> getOrdersPaged(int page, int size) {
+        int offset = (page - 1) * size;
+        String sql = "SELECT * FROM orders ORDER BY created_at DESC LIMIT ? OFFSET ?";
+        List<Map<String, Object>> rows = d1.query(sql, size, offset);
+        return rows.stream().map(this::mapToOrder).toList();
+    }
+
+    public List<Order> getOrdersByUserIdPaged(Long userId, int page, int size) {
+        int offset = (page - 1) * size;
+        String sql = "SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC LIMIT ? OFFSET ?";
+        List<Map<String, Object>> rows = d1.query(sql, userId, size, offset);
+        return rows.stream().map(this::mapToOrder).toList();
+    }
+
+    public int getOrderCount() {
+        String sql = "SELECT COUNT(*) as cnt FROM orders";
+        List<Map<String, Object>> rows = d1.query(sql);
+        return ((Number) rows.get(0).get("cnt")).intValue();
+    }
+
+    public int getOrderCountByUserId(Long userId) {
+        String sql = "SELECT COUNT(*) as cnt FROM orders WHERE user_id = ?";
+        List<Map<String, Object>> rows = d1.query(sql, userId);
+        return ((Number) rows.get(0).get("cnt")).intValue();
+    }
+
     private List<OrderItem> getOrderItems(Long orderId) {
         String sql = "SELECT * FROM order_items WHERE order_id = ?";
         List<Map<String, Object>> rows = d1.query(sql, orderId);

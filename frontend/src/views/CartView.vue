@@ -50,10 +50,7 @@
 
         <el-form :model="orderForm" label-width="80px" class="order-form">
           <el-form-item label="点餐人">
-            <el-radio-group v-model="orderForm.customerName">
-              <el-radio-button label="布布">布布</el-radio-button>
-              <el-radio-button label="一一">一一</el-radio-button>
-            </el-radio-group>
+            <el-input v-model="orderForm.customerName" placeholder="请输入点餐人姓名" maxlength="20" />
           </el-form-item>
           <el-form-item label="备注">
             <el-input v-model="orderForm.remark" type="textarea" placeholder="有什么特殊要求吗？" :rows="2" />
@@ -80,17 +77,15 @@
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCartStore } from '../stores/cart'
-import { useAuthStore } from '../stores/auth'
 import { orderApi } from '../api'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 const router = useRouter()
 const cartStore = useCartStore()
-const authStore = useAuthStore()
 const submitting = ref(false)
 
 const orderForm = reactive({
-  customerName: authStore.nickname || '',
+  customerName: '',
   remark: ''
 })
 
@@ -104,8 +99,8 @@ function clearCart() {
 }
 
 async function submitOrder() {
-  if (!orderForm.customerName) {
-    ElMessage.warning('请选择点餐人')
+  if (!orderForm.customerName.trim()) {
+    ElMessage.warning('请输入点餐人姓名')
     return
   }
 
@@ -219,15 +214,6 @@ async function submitOrder() {
 
 .order-form {
   margin-top: 16px;
-}
-
-.order-form :deep(.el-radio-button__inner) {
-  border-color: #ff6b8a !important;
-}
-
-.order-form :deep(.el-radio-button__original-radio:checked + .el-radio-button__inner) {
-  background-color: #ff6b8a !important;
-  border-color: #ff6b8a !important;
 }
 
 .cart-actions {

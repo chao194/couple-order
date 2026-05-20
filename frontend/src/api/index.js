@@ -43,6 +43,7 @@ export const menuApi = {
 // Order API
 export const orderApi = {
   getAll: () => api.get('/orders'),
+  getPage: (page, size) => api.get('/orders/page', { params: { page, size } }),
   getById: (id) => api.get(`/orders/${id}`),
   getByNo: (orderNo) => api.get(`/orders/no/${orderNo}`),
   getByStatus: (status) => api.get(`/orders/status/${status}`),
