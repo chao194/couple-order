@@ -3,9 +3,9 @@ server:
 
 cloudflare:
   d1:
-    account-id: ${D1_ACCOUNT_ID}
-    database-id: ${D1_DATABASE_ID}
-    api-token: ${D1_API_TOKEN}
+    account-id: ${CLOUDFLARE_D1_ACCOUNT_ID}
+    database-id: ${CLOUDFLARE_D1_DATABASE_ID}
+    api-token: ${CLOUDFLARE_D1_API_TOKEN}
 
 spring:
   jackson:
