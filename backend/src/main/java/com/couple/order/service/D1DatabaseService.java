@@ -107,4 +107,31 @@ public class D1DatabaseService {
             throw new RuntimeException("Failed to execute D1 statement: " + e.getMessage(), e);
         }
     }
+
+    public long executeInsert(String sql, Object... params) {
+        String url = getBaseUrl() + "/query";
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("sql", sql);
+        if (params != null && params.length > 0) {
+            body.put("params", convertParams(params));
+        }
+
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, getHeaders());
+
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, request, String.class);
+            JsonNode root = objectMapper.readTree(response.getBody());
+
+            if (root.has("success") && root.get("success").asBoolean()) {
+                JsonNode meta = root.get("result").get(0).get("meta");
+                return meta.has("last_row_id") ? meta.get("last_row_id").asLong() : -1;
+            } else {
+                String errors = root.has("errors") ? root.get("errors").toString() : "Unknown error";
+                throw new RuntimeException("D1 executeInsert failed: " + errors);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to execute D1 insert: " + e.getMessage(), e);
+        }
+    }
 }

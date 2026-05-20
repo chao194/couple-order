@@ -34,11 +34,8 @@ public class MenuService {
 
     public MenuItem createMenuItem(MenuItem item) {
         String sql = "INSERT INTO menu_items (name, description, price, category, image_url, available) VALUES (?, ?, ?, ?, ?, ?)";
-        d1.execute(sql, item.getName(), item.getDescription(), item.getPrice(),
+        Long newId = d1.executeInsert(sql, item.getName(), item.getDescription(), item.getPrice(),
                 item.getCategory(), item.getImageUrl(), item.getAvailable() != null ? item.getAvailable() : true);
-
-        List<Map<String, Object>> rows = d1.query("SELECT last_insert_rowid() as id");
-        Long newId = ((Number) rows.get(0).get("id")).longValue();
         return getMenuItemById(newId);
     }
 

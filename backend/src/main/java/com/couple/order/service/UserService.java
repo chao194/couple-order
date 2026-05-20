@@ -39,11 +39,8 @@ public class UserService {
     public User createUser(User user) {
         String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String sql = "INSERT INTO users (username, password, nickname, role, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)";
-        d1.execute(sql, user.getUsername(), hashPassword(user.getPassword()),
+        Long userId = d1.executeInsert(sql, user.getUsername(), hashPassword(user.getPassword()),
                 user.getNickname(), user.getRole() != null ? user.getRole() : "USER", now, now);
-
-        List<Map<String, Object>> rows = d1.query("SELECT last_insert_rowid() as id");
-        Long userId = ((Number) rows.get(0).get("id")).longValue();
         return getUserById(userId);
     }
 

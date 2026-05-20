@@ -37,10 +37,7 @@ public class RoleService {
     public Role createRole(Role role) {
         String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String sql = "INSERT INTO roles (name, description, created_at) VALUES (?, ?, ?)";
-        d1.execute(sql, role.getName(), role.getDescription(), now);
-
-        List<Map<String, Object>> rows = d1.query("SELECT last_insert_rowid() as id");
-        Long roleId = ((Number) rows.get(0).get("id")).longValue();
+        Long roleId = d1.executeInsert(sql, role.getName(), role.getDescription(), now);
         return getRoleById(roleId);
     }
 

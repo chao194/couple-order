@@ -54,11 +54,8 @@ public class OrderService {
         }
 
         String sql = "INSERT INTO orders (order_no, user_id, customer_name, status, total_amount, remark, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        d1.execute(sql, orderNo, order.getUserId(), order.getCustomerName(), "pending", total,
+        Long orderId = d1.executeInsert(sql, orderNo, order.getUserId(), order.getCustomerName(), "pending", total,
                 order.getRemark(), now, now);
-
-        List<Map<String, Object>> rows = d1.query("SELECT last_insert_rowid() as id");
-        Long orderId = ((Number) rows.get(0).get("id")).longValue();
 
         // Insert order items
         if (order.getItems() != null) {

@@ -22,11 +22,8 @@ public class FileService {
         String base64Data = Base64.getEncoder().encodeToString(file.getBytes());
 
         String sql = "INSERT INTO file (filename, original_name, content_type, size, data) VALUES (?, ?, ?, ?, ?)";
-        d1.execute(sql, filename, file.getOriginalFilename(), file.getContentType(),
+        Long newId = d1.executeInsert(sql, filename, file.getOriginalFilename(), file.getContentType(),
                 file.getSize(), base64Data);
-
-        List<Map<String, Object>> rows = d1.query("SELECT last_insert_rowid() as id");
-        Long newId = ((Number) rows.get(0).get("id")).longValue();
 
         FileEntity fileEntity = getFileById(newId);
         fileEntity.setUrl("/api/files/" + newId + "/content");

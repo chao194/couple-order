@@ -28,10 +28,7 @@ public class CategoryService {
 
     public Category createCategory(Category category) {
         String sql = "INSERT INTO category (name, icon, sort_order) VALUES (?, ?, ?)";
-        d1.execute(sql, category.getName(), category.getIcon(), category.getSortOrder() != null ? category.getSortOrder() : 0);
-
-        List<Map<String, Object>> rows = d1.query("SELECT last_insert_rowid() as id");
-        Long newId = ((Number) rows.get(0).get("id")).longValue();
+        Long newId = d1.executeInsert(sql, category.getName(), category.getIcon(), category.getSortOrder() != null ? category.getSortOrder() : 0);
         return getCategoryById(newId);
     }
 
