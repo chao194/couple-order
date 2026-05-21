@@ -129,19 +129,33 @@ onMounted(() => {
 .card-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 700;
+}
+
+.card-header .el-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
 }
 
 .amount {
-  color: #ff6b8a;
-  font-weight: bold;
+  color: var(--color-primary);
+  font-weight: 700;
 }
 
 .pagination-wrap {
   display: flex;
   justify-content: flex-end;
-  margin-top: 16px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 107, 138, 0.06);
 }
 </style>

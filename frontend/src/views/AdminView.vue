@@ -78,59 +78,91 @@ function handleMenuSelect(index) {
   height: 100%;
 }
 
+/* ===== Sidebar ===== */
 .admin-aside {
-  background: linear-gradient(180deg, #ff6b8a 0%, #ff8e9e 100%);
+  background: linear-gradient(180deg, rgba(255, 107, 138, 0.95) 0%, rgba(255, 142, 158, 0.95) 100%);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
   overflow: hidden;
-  box-shadow: 4px 0 20px rgba(255, 107, 138, 0.2);
+  box-shadow: 4px 0 24px rgba(255, 107, 138, 0.2);
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .admin-logo {
-  height: 60px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   color: #fff;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 700;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
+.admin-logo .el-icon {
+  font-size: 20px;
+}
+
+/* ===== Menu ===== */
 .admin-menu {
   border-right: none;
   background: transparent;
+  padding: 8px 0;
 }
 
 .admin-menu .el-menu-item {
-  color: rgba(255, 255, 255, 0.85);
-  height: 50px;
-  line-height: 50px;
+  color: rgba(255, 255, 255, 0.8);
+  height: 48px;
+  line-height: 48px;
+  margin: 2px 8px;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-normal);
 }
 
-.admin-menu .el-menu-item:hover,
-.admin-menu .el-menu-item.is-active {
-  background: rgba(255, 255, 255, 0.2) !important;
+.admin-menu .el-menu-item:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
   color: #fff !important;
+}
+
+.admin-menu .el-menu-item.is-active {
+  background: rgba(255, 255, 255, 0.25) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
 }
 
 .admin-menu .el-menu-item .el-icon {
   color: inherit;
+  font-size: 17px;
+  transition: transform var(--transition-bounce);
 }
 
+.admin-menu .el-menu-item:hover .el-icon {
+  transform: scale(1.15);
+}
+
+/* ===== Main Content ===== */
 .admin-main {
   padding: 0 0 0 20px;
   overflow-y: auto;
   background: transparent;
 }
 
-/* 路由切换动画 */
+/* ===== Route Transition ===== */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.fade-enter-from,
+.fade-enter-from {
+  opacity: 0;
+  transform: translateX(12px);
+}
+
 .fade-leave-to {
   opacity: 0;
+  transform: translateX(-12px);
 }
 </style>

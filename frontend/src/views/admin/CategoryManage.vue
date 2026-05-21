@@ -15,7 +15,7 @@
       <el-table :data="categories" stripe style="width: 100%">
         <el-table-column label="图标" width="80" align="center">
           <template #default="{ row }">
-            <span style="font-size: 24px;">{{ row.icon || '🍽️' }}</span>
+            <span class="category-icon">{{ row.icon || '🍽️' }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="name" label="分类名称" align="center" />
@@ -167,16 +167,40 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.category-icon {
+  font-size: 24px;
+  display: inline-block;
+  transition: transform var(--transition-bounce);
+}
+
+.category-icon:hover {
+  transform: scale(1.2);
+}
+
 .card-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 700;
+}
+
+.card-header .el-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
 }
 
 .card-header .el-button {
   margin-left: auto;
+  border-radius: var(--radius-full) !important;
+  font-weight: 600;
 }
 
 .icon-picker {
@@ -186,10 +210,15 @@ onMounted(() => {
 .icon-preview {
   display: inline-block;
   font-size: 32px;
-  margin-bottom: 8px;
-  padding: 6px 12px;
-  background: #fff5f7;
-  border-radius: 8px;
+  margin-bottom: 10px;
+  padding: 8px 14px;
+  background: var(--color-primary-bg);
+  border-radius: var(--radius-md);
+  transition: transform var(--transition-bounce);
+}
+
+.icon-preview:hover {
+  transform: scale(1.1);
 }
 
 .emoji-list {
@@ -198,27 +227,28 @@ onMounted(() => {
   gap: 10px;
   max-height: 160px;
   overflow-y: auto;
-  padding: 8px;
-  background: #fafafa;
-  border-radius: 8px;
-  border: 1px solid #eee;
+  padding: 10px;
+  background: rgba(255, 107, 138, 0.03);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 107, 138, 0.1);
 }
 
 .emoji-item {
   font-size: 22px;
-  padding: 4px 6px;
+  padding: 5px 7px;
   cursor: pointer;
-  border-radius: 6px;
-  transition: all 0.2s;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-bounce);
 }
 
 .emoji-item:hover {
-  background: #fff0f3;
-  transform: scale(1.15);
+  background: rgba(255, 107, 138, 0.1);
+  transform: scale(1.2);
 }
 
 .emoji-item.active {
-  background: #ffe0e6;
-  box-shadow: 0 0 0 2px #ff6b8a;
+  background: rgba(255, 107, 138, 0.15);
+  box-shadow: 0 0 0 2px var(--color-primary);
+  transform: scale(1.15);
 }
 </style>

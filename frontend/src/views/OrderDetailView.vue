@@ -146,19 +146,36 @@ onMounted(loadOrder)
 
 <style scoped>
 .order-detail-view {
-  max-width: 600px;
+  max-width: 620px;
   margin: 0 auto;
+  animation: fadeInUp 0.5s ease;
 }
 
 .order-card {
-  border-radius: 16px;
+  border-radius: var(--radius-xl) !important;
 }
 
+/* ===== Status Banner ===== */
 .status-banner {
   text-align: center;
-  padding: 30px;
-  border-radius: 12px;
+  padding: 36px;
+  border-radius: var(--radius-lg);
   margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.status-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.3), transparent 60%);
+}
+
+.status-banner .el-icon {
+  position: relative;
+  z-index: 1;
+  animation: float 3s ease-in-out infinite;
 }
 
 .status-banner.pending {
@@ -184,8 +201,12 @@ onMounted(loadOrder)
 .status-banner h2 {
   margin-top: 12px;
   font-size: 24px;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
 }
 
+/* ===== Sections ===== */
 .info-section,
 .items-section {
   margin-bottom: 24px;
@@ -194,29 +215,51 @@ onMounted(loadOrder)
 .info-section h3,
 .items-section h3 {
   font-size: 16px;
-  color: #333;
+  font-weight: 700;
+  color: var(--text-primary);
   margin-bottom: 12px;
   padding-bottom: 8px;
-  border-bottom: 2px solid #ff6b8a;
+  border-bottom: 2px solid var(--color-primary);
   display: inline-block;
 }
 
-.order-no {
-  font-family: monospace;
-  color: #ff6b8a;
-  font-weight: bold;
+.info-section :deep(.el-descriptions) {
+  border-radius: var(--radius-md);
+  overflow: hidden;
 }
 
+.info-section :deep(.el-descriptions__label) {
+  font-weight: 600;
+}
+
+.order-no {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  color: var(--color-primary);
+  font-weight: 700;
+  background: rgba(255, 107, 138, 0.08);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+
+/* ===== Detail Items ===== */
 .detail-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid #f5f5f5;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 107, 138, 0.06);
+  transition: all var(--transition-fast);
 }
 
 .detail-item:last-child {
   border-bottom: none;
+}
+
+.detail-item:hover {
+  background: rgba(255, 107, 138, 0.03);
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: var(--radius-sm);
 }
 
 .item-info {
@@ -227,50 +270,61 @@ onMounted(loadOrder)
 
 .item-name {
   font-size: 15px;
-  color: #333;
+  font-weight: 500;
+  color: var(--text-primary);
 }
 
 .item-qty {
   font-size: 13px;
-  color: #999;
+  color: var(--text-muted);
+  background: rgba(0, 0, 0, 0.04);
+  padding: 1px 8px;
+  border-radius: var(--radius-full);
 }
 
 .item-price {
-  font-size: 15px;
-  font-weight: bold;
-  color: #ff6b8a;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-primary);
 }
 
+/* ===== Total ===== */
 .total-section {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 20px 0;
-  border-top: 2px solid #eee;
+  border-top: 2px solid rgba(255, 107, 138, 0.1);
   margin-top: 16px;
 }
 
 .total-section span:first-child {
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .total-price {
-  font-size: 24px;
-  font-weight: bold;
-  color: #ff6b8a;
+  font-size: 28px;
+  font-weight: 800;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
+/* ===== Actions ===== */
 .actions {
   display: flex;
   gap: 12px;
-  margin-top: 24px;
+  margin-top: 28px;
   flex-wrap: wrap;
 }
 
 .actions .el-button {
   flex: 1;
   min-width: 120px;
+  border-radius: var(--radius-md) !important;
+  font-weight: 600;
 }
 
 .loading-container {

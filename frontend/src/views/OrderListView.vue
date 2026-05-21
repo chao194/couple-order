@@ -111,8 +111,10 @@ onMounted(loadOrders)
 .order-list-view {
   max-width: 700px;
   margin: 0 auto;
+  animation: fadeInUp 0.5s ease;
 }
 
+/* ===== Filter Bar ===== */
 .filter-bar {
   display: flex;
   justify-content: center;
@@ -120,28 +122,67 @@ onMounted(loadOrders)
 }
 
 .filter-bar .el-radio-button {
-  --el-radio-button-checked-bg-color: #ff6b8a;
-  --el-radio-button-checked-border-color: #ff6b8a;
+  --el-radio-button-checked-bg-color: var(--color-primary);
+  --el-radio-button-checked-border-color: var(--color-primary);
 }
 
+.filter-bar :deep(.el-radio-button__inner) {
+  border-radius: var(--radius-full) !important;
+  padding: 8px 20px;
+  font-weight: 500;
+  border: none !important;
+  box-shadow: none !important;
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.filter-bar :deep(.el-radio-button__original-radio:checked + .el-radio-button__inner) {
+  box-shadow: 0 2px 12px rgba(255, 107, 138, 0.3) !important;
+}
+
+/* ===== Order List ===== */
 .order-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
+/* ===== Order Card ===== */
 .order-card {
-  background: white;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 4px 16px rgba(255, 107, 138, 0.08);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 20px 20px 20px 24px;
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.order-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--gradient-primary);
+  border-radius: 2px 0 0 2px;
+  opacity: 0;
+  transition: opacity var(--transition-normal);
 }
 
 .order-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(255, 107, 138, 0.15);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.order-card:hover::before {
+  opacity: 1;
 }
 
 .order-header {
@@ -158,14 +199,17 @@ onMounted(loadOrders)
 }
 
 .order-no {
-  font-size: 14px;
-  color: #666;
-  font-family: monospace;
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  background: rgba(255, 107, 138, 0.06);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
 }
 
 .order-time {
   font-size: 13px;
-  color: #999;
+  color: var(--text-muted);
 }
 
 .order-body {
@@ -179,14 +223,17 @@ onMounted(loadOrders)
   align-items: center;
   gap: 6px;
   font-size: 16px;
-  font-weight: bold;
-  color: #333;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .order-amount {
-  font-size: 20px;
-  font-weight: bold;
-  color: #ff6b8a;
+  font-size: 22px;
+  font-weight: 800;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .order-remark {
@@ -195,9 +242,9 @@ onMounted(loadOrders)
   gap: 6px;
   margin-top: 12px;
   padding-top: 12px;
-  border-top: 1px dashed #eee;
+  border-top: 1px dashed rgba(255, 107, 138, 0.15);
   font-size: 13px;
-  color: #999;
+  color: var(--text-muted);
 }
 
 .loading-container {

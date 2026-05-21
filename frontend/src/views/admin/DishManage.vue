@@ -32,7 +32,7 @@
         </el-table-column>
         <el-table-column prop="price" label="价格" width="80" align="center">
           <template #default="{ row }">
-            <span style="color: #ff6b8a; font-weight: bold;">¥{{ row.price?.toFixed(2) }}</span>
+            <span class="price-cell">¥{{ row.price?.toFixed(2) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="description" label="描述" align="center" />
@@ -239,16 +239,35 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.price-cell {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
 .card-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 700;
+}
+
+.card-header .el-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
 }
 
 .card-header .el-button {
   margin-left: auto;
+  border-radius: var(--radius-full) !important;
+  font-weight: 600;
 }
 
 .no-image {
@@ -257,19 +276,20 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f5f5f5;
-  border-radius: 8px;
+  background: rgba(255, 107, 138, 0.06);
+  border-radius: var(--radius-sm);
   font-size: 24px;
 }
 
 .image-uploader {
   width: 120px;
   height: 120px;
-  border: 2px dashed #ddd;
-  border-radius: 12px;
+  border: 2px dashed rgba(255, 107, 138, 0.25);
+  border-radius: var(--radius-md);
   cursor: pointer;
   overflow: hidden;
-  transition: border-color 0.3s;
+  transition: all var(--transition-normal);
+  background: rgba(255, 107, 138, 0.03);
 }
 
 .image-uploader :deep(.el-upload) {
@@ -281,7 +301,8 @@ onMounted(() => {
 }
 
 .image-uploader:hover {
-  border-color: #ff6b8a;
+  border-color: var(--color-primary);
+  background: rgba(255, 107, 138, 0.06);
 }
 
 .uploaded-image {
@@ -289,11 +310,18 @@ onMounted(() => {
   height: 100%;
   object-fit: cover;
   pointer-events: none;
+  border-radius: var(--radius-md);
 }
 
 .upload-icon {
   font-size: 28px;
-  color: #999;
+  color: var(--text-muted);
+  transition: all var(--transition-bounce);
+}
+
+.image-uploader:hover .upload-icon {
+  color: var(--color-primary);
+  transform: scale(1.1);
 }
 
 .upload-container {
@@ -304,7 +332,7 @@ onMounted(() => {
 
 .upload-tip {
   font-size: 12px;
-  color: #999;
+  color: var(--text-muted);
   margin-top: 8px;
 }
 </style>

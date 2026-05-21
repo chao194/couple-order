@@ -141,12 +141,26 @@ onMounted(() => {
 .card-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 700;
+}
+
+.card-header .el-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
 }
 
 .card-header .el-button {
   margin-left: auto;
+  border-radius: var(--radius-full) !important;
+  font-weight: 600;
 }
 </style>

@@ -1,12 +1,31 @@
 <template>
   <div class="login-view">
-    <el-card class="login-card">
+    <!-- Decorative Background -->
+    <div class="bg-decorations">
+      <div class="bubble bubble-1"></div>
+      <div class="bubble bubble-2"></div>
+      <div class="bubble bubble-3"></div>
+      <div class="bubble bubble-4"></div>
+    </div>
+
+    <el-card class="login-card" shadow="always">
       <div class="login-header">
-        <el-icon size="48" color="#ff6b8a"><User /></el-icon>
+        <div class="header-icon">
+          <el-icon size="40" color="#fff"><User /></el-icon>
+        </div>
         <h2>{{ isRegister ? '注册账号' : '用户登录' }}</h2>
+        <p class="header-subtitle">
+          {{ isRegister ? '创建一个新账号' : '欢迎回来，请登录' }}
+        </p>
       </div>
 
-      <el-form :model="form" :rules="rules" ref="formRef" label-width="0" class="login-form">
+      <el-form
+        :model="form"
+        :rules="rules"
+        ref="formRef"
+        label-width="0"
+        class="login-form"
+      >
         <el-form-item prop="username">
           <el-input
             v-model="form.username"
@@ -76,18 +95,18 @@ const isRegister = ref(false)
 const form = reactive({
   username: '',
   password: '',
-  nickname: ''
+  nickname: '',
 })
 
 const rules = {
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 3, max: 20, message: '用户名长度在3-20个字符', trigger: 'blur' }
+    { min: 3, max: 20, message: '用户名长度在3-20个字符', trigger: 'blur' },
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, message: '密码长度不能少于6位', trigger: 'blur' }
-  ]
+    { min: 6, message: '密码长度不能少于6位', trigger: 'blur' },
+  ],
 }
 
 async function handleSubmit() {
@@ -106,12 +125,12 @@ async function handleSubmit() {
       res = await authApi.register({
         username: form.username,
         password: form.password,
-        nickname: form.nickname || form.username
+        nickname: form.nickname || form.username,
       })
     } else {
       res = await authApi.login({
         username: form.username,
-        password: form.password
+        password: form.password,
       })
     }
 
@@ -138,53 +157,154 @@ async function handleSubmit() {
   align-items: center;
   justify-content: center;
   padding: 20px;
+  position: relative;
+  overflow: hidden;
 }
 
+/* ===== Decorative Background Bubbles ===== */
+.bg-decorations {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.15;
+}
+
+.bubble-1 {
+  width: 300px;
+  height: 300px;
+  background: var(--gradient-primary);
+  top: -80px;
+  right: -60px;
+  animation: float 8s ease-in-out infinite;
+}
+
+.bubble-2 {
+  width: 200px;
+  height: 200px;
+  background: var(--gradient-warm);
+  bottom: -50px;
+  left: -40px;
+  animation: float 10s ease-in-out infinite 1s;
+}
+
+.bubble-3 {
+  width: 150px;
+  height: 150px;
+  background: var(--color-primary-lighter);
+  top: 40%;
+  left: 10%;
+  animation: float 7s ease-in-out infinite 2s;
+}
+
+.bubble-4 {
+  width: 100px;
+  height: 100px;
+  background: var(--color-primary);
+  bottom: 20%;
+  right: 15%;
+  animation: float 9s ease-in-out infinite 0.5s;
+}
+
+/* ===== Login Card ===== */
 .login-card {
   width: 100%;
-  max-width: 400px;
-  border-radius: 20px;
-  padding: 20px;
+  max-width: 420px;
+  border-radius: var(--radius-xl) !important;
+  padding: 28px;
+  background: var(--glass-bg) !important;
+  backdrop-filter: var(--glass-blur) !important;
+  -webkit-backdrop-filter: var(--glass-blur) !important;
+  border: var(--glass-border) !important;
+  box-shadow: var(--shadow-xl), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+  animation: fadeInUp 0.6s ease;
+  position: relative;
+  z-index: 1;
 }
 
+/* ===== Header ===== */
 .login-header {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 28px;
+}
+
+.header-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 16px;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(255, 107, 138, 0.35);
+  animation: float 4s ease-in-out infinite;
 }
 
 .login-header h2 {
-  margin-top: 12px;
-  color: #333;
+  margin-top: 0;
+  color: var(--text-primary);
   font-size: 24px;
+  font-weight: 700;
 }
 
+.header-subtitle {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+/* ===== Form ===== */
 .login-form {
-  margin-top: 20px;
+  margin-top: 8px;
 }
 
 .login-form :deep(.el-input__wrapper) {
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border-radius: var(--radius-md) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  transition: all var(--transition-fast) !important;
+  padding: 4px 12px;
 }
 
+.login-form :deep(.el-input__wrapper:hover) {
+  box-shadow: 0 2px 12px rgba(255, 107, 138, 0.15) !important;
+}
+
+.login-form :deep(.el-input.is-focus .el-input__wrapper) {
+  box-shadow: 0 0 0 2px rgba(255, 107, 138, 0.3) !important;
+}
+
+/* ===== Submit Button ===== */
 .submit-btn {
   width: 100%;
-  border-radius: 12px;
+  border-radius: var(--radius-md) !important;
   font-size: 16px;
-  height: 48px;
+  font-weight: 600;
+  height: 50px;
+  letter-spacing: 2px;
+  box-shadow: 0 4px 16px rgba(255, 107, 138, 0.35) !important;
+  transition: all var(--transition-normal) !important;
 }
 
+.submit-btn:hover {
+  box-shadow: 0 6px 24px rgba(255, 107, 138, 0.5) !important;
+  transform: translateY(-2px);
+}
+
+.submit-btn:active {
+  transform: translateY(0) scale(0.99);
+}
+
+/* ===== Footer ===== */
 .login-footer {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 24px;
   font-size: 14px;
-  color: #999;
-}
-
-.login-tip {
-  text-align: center;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px dashed #eee;
+  color: var(--text-muted);
 }
 </style>
