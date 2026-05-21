@@ -134,4 +134,26 @@ public class D1DatabaseService {
             throw new RuntimeException("Failed to execute D1 insert: " + e.getMessage(), e);
         }
     }
+
+    /**
+     * Batch execute multiple SQL statements in a single HTTP request.
+     * Each element is a map with "sql" and optional "params" keys.
+     */
+    public void batch(List<Map<String, Object>> statements) {
+        String url = getBaseUrl() + "/query";
+
+        HttpEntity<List<Map<String, Object>>> request = new HttpEntity<>(statements, getHeaders());
+
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, request, String.class);
+            JsonNode root = objectMapper.readTree(response.getBody());
+
+            if (!root.has("success") || !root.get("success").asBoolean()) {
+                String errors = root.has("errors") ? root.get("errors").toString() : "Unknown error";
+                throw new RuntimeException("D1 batch failed: " + errors);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to execute D1 batch: " + e.getMessage(), e);
+        }
+    }
 }

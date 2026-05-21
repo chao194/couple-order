@@ -57,24 +57,61 @@ public class OrderService {
         Long orderId = d1.executeInsert(sql, orderNo, order.getUserId(), order.getCustomerName(), "pending", total,
                 order.getRemark(), now, now);
 
-        // Insert order items
-        if (order.getItems() != null) {
+        // Batch insert order items in a single HTTP request
+        if (order.getItems() != null && !order.getItems().isEmpty()) {
+            List<Map<String, Object>> statements = new ArrayList<>();
             for (OrderItem item : order.getItems()) {
                 double subtotal = item.getPrice() * item.getQuantity();
-                String itemSql = "INSERT INTO order_items (order_id, menu_item_id, menu_item_name, price, quantity, subtotal) VALUES (?, ?, ?, ?, ?, ?)";
-                d1.execute(itemSql, orderId, item.getMenuItemId(), item.getMenuItemName(),
-                        item.getPrice(), item.getQuantity(), subtotal);
+                Map<String, Object> stmt = new HashMap<>();
+                stmt.put("sql", "INSERT INTO order_items (order_id, menu_item_id, menu_item_name, price, quantity, subtotal) VALUES (?, ?, ?, ?, ?, ?)");
+                stmt.put("params", List.of(orderId, item.getMenuItemId(), item.getMenuItemName(),
+                        item.getPrice(), item.getQuantity(), subtotal));
+                statements.add(stmt);
             }
+            d1.batch(statements);
         }
 
-        return getOrderById(orderId);
+        // Build result directly instead of re-querying
+        Order result = new Order();
+        result.setId(orderId);
+        result.setOrderNo(orderNo);
+        result.setUserId(order.getUserId());
+        result.setCustomerName(order.getCustomerName());
+        result.setStatus("pending");
+        result.setTotalAmount(total);
+        result.setRemark(order.getRemark());
+        result.setCreatedAt(now);
+        result.setUpdatedAt(now);
+
+        if (order.getItems() != null) {
+            List<OrderItem> items = new ArrayList<>();
+            for (int i = 0; i < order.getItems().size(); i++) {
+                OrderItem src = order.getItems().get(i);
+                OrderItem item = new OrderItem();
+                item.setOrderId(orderId);
+                item.setMenuItemId(src.getMenuItemId());
+                item.setMenuItemName(src.getMenuItemName());
+                item.setPrice(src.getPrice());
+                item.setQuantity(src.getQuantity());
+                item.setSubtotal(src.getPrice() * src.getQuantity());
+                items.add(item);
+            }
+            result.setItems(items);
+        }
+
+        return result;
     }
 
     public Order updateOrderStatus(Long id, String status) {
         String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String sql = "UPDATE orders SET status = ?, updated_at = ? WHERE id = ?";
         d1.execute(sql, status, now, id);
-        return getOrderById(id);
+
+        // Return order without re-fetching items (not needed for status update response)
+        String selectSql = "SELECT * FROM orders WHERE id = ?";
+        List<Map<String, Object>> rows = d1.query(selectSql, id);
+        if (rows.isEmpty()) return null;
+        return mapToOrder(rows.get(0));
     }
 
     public void deleteOrder(Long id) {

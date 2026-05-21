@@ -117,6 +117,14 @@ public class InitController {
                 )
             """);
 
+            // Create indexes for common query patterns
+            d1.execute("CREATE INDEX IF NOT EXISTS idx_orders_user_id ON orders(user_id)");
+            d1.execute("CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status)");
+            d1.execute("CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at DESC)");
+            d1.execute("CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON order_items(order_id)");
+            d1.execute("CREATE INDEX IF NOT EXISTS idx_menu_items_category ON menu_items(category)");
+            d1.execute("CREATE INDEX IF NOT EXISTS idx_menu_items_available ON menu_items(available)");
+
             return ApiResponse.ok("数据库表创建成功");
         } catch (Exception e) {
             return ApiResponse.error("创建表失败: " + e.getMessage());
